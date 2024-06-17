@@ -302,85 +302,88 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
 
-        Expanded(
-          child: ListView.separated(
-            itemCount: _provider.transactions.length > 10 ? 10 : _provider.transactions.length,
-            itemBuilder: (BuildContext context, int index){
-              TransactionModel model = _provider.transactions[index];
-              String name = (model.firstName.toString().split("").first) + (model.lastName.toString().split("").isNotEmpty ? model.lastName.toString().split("").first : model.firstName.substring(1, 1));
-              return ListTile(
-                isThreeLine: true,
-                dense: true,
-                leading: Container(
-                  height: 50.w,
-                  width: 50.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
-                    child: TextView(
-                      text: name,
-                      textStyle: TextStyle(
-                          fontSize: 16.sp,
-                          fontFamily: fontFamily,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white
+        Consumer<PropertyProvider>(builder: (__, provider, _) {
+            return Expanded(
+              child: ListView.separated(
+                itemCount: provider.transactions.length > 10 ? 10 : provider.transactions.length,
+                itemBuilder: (BuildContext context, int index){
+                  TransactionModel model = provider.transactions[index];
+                  String name = (model.firstName.toString().split("").first) + (model.lastName.toString().split("").isNotEmpty ? model.lastName.toString().split("").first : model.firstName.substring(1, 1));
+                  return ListTile(
+                    isThreeLine: true,
+                    dense: true,
+                    leading: Container(
+                      height: 50.w,
+                      width: 50.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                        child: TextView(
+                          text: name,
+                          textStyle: TextStyle(
+                              fontSize: 16.sp,
+                              fontFamily: fontFamily,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                title: TextView(
-                  text: "${model.property['title']} - ${model.firstName}",
-                  textOverflow: TextOverflow.ellipsis,
-                  textStyle: TextStyle(
-                    fontSize: ScreenUtil().setSp(16),
-                    fontFamily: fontFamily,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextView(
-                      text: "${formatMoney(model.transactionAmount)}",
+                    title: TextView(
+                      text: "${model.property['title']} - ${model.firstName}",
                       textOverflow: TextOverflow.ellipsis,
                       textStyle: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
+                        fontSize: ScreenUtil().setSp(16),
                         fontFamily: fontFamily,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextView(
+                          text: "${formatMoney(model.transactionAmount)}",
+                          textOverflow: TextOverflow.ellipsis,
+                          textStyle: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            fontFamily: fontFamily,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
 
-                    TextView(
-                      text: "${formatDate(model.checkinDate, format: 'MMM dd, yyyy')} - ${formatDate(model.checkoutDate, format: 'MMM dd, yyyy')}",
-                      textOverflow: TextOverflow.ellipsis,
-                      textStyle: TextStyle(
-                        fontSize: ScreenUtil().setSp(12),
-                        fontFamily: fontFamily,
-                        fontWeight: FontWeight.w400,
-                      ),
+                        TextView(
+                          text: "${formatDate(model.checkinDate, format: 'MMM dd, yyyy')} - ${formatDate(model.checkoutDate, format: 'MMM dd, yyyy')}",
+                          textOverflow: TextOverflow.ellipsis,
+                          textStyle: TextStyle(
+                            fontSize: ScreenUtil().setSp(12),
+                            fontFamily: fontFamily,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                trailing: Icon(
-                  model.status == "pending" ? Icons.pending :
-                  model.status == "processing" ? Icons.downloading :
-                  model.status == "completed" ? Icons.check_circle : Icons.cancel,
-                  size: 20.w,
-                  color:  model.status == "pending" ? Pallet.mainOrange :
-                  model.status == "processing" ? Pallet.blue :
-                  model.status == "completed" ? Pallet.green : Pallet.red,
-                ),
-                onTap: (){
-                  openTransactionDetail(context, transactionModel: model);
+                    trailing: Icon(
+                      model.status == "pending" ? Icons.pending :
+                      model.status == "processing" ? Icons.downloading :
+                      model.status == "completed" ? Icons.check_circle : Icons.cancel,
+                      size: 20.w,
+                      color:  model.status == "pending" ? Pallet.mainOrange :
+                      model.status == "processing" ? Pallet.blue :
+                      model.status == "completed" ? Pallet.green : Pallet.red,
+                    ),
+                    onTap: (){
+                      openTransactionDetail(context, transactionModel: model);
+                    },
+                  );
                 },
-              );
-            },
-            separatorBuilder: (context, index) {
-              return const Divider(color: Pallet.lightGrey, thickness: 1,);
-            },
-          ),
+                separatorBuilder: (context, index) {
+                  return const Divider(color: Pallet.lightGrey, thickness: 1,);
+                },
+              ),
+            );
+          }
         ),
       ],
     );
