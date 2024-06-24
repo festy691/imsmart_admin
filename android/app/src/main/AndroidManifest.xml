@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.imtech.imsmart_admin">
     <application
         android:label="imsmart_admin"
         android:name="${applicationName}"
