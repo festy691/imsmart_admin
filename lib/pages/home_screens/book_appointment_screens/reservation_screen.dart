@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:imsmart_admin/core/widget/bottom_sheets.dart';
 import 'package:imsmart_admin/pages/home_screens/book_appointment_screens/payment_screen.dart';
+import 'package:imsmart_admin/pages/home_screens/book_appointment_screens/reserve_sheet.dart';
 import 'package:imsmart_admin/pages/home_screens/components/payment_card.dart'
     as PayCard;
 
@@ -343,8 +344,23 @@ class _ReservationScreenState extends State<ReservationScreen> {
     if (_activePage == 0) return;
 
     _pageController.previousPage(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.ease,
+    );
+  }
+
+  void openReserveOptionSheet(BuildContext context) {
+    BottomSheets.showSheet<String>(
+      context,
+      child: ReserveSheet(onSelected: (int index) async {
+        if(index == 0){
+          var result = await _provider.initPayment(context: context, email: emailController.text, amount: (bookApartmentModel.transactionAmount * 100).ceil());
+          if(result.error) return;
+          PageRouter.gotoWidget(PaymentScreen(bookApartmentModel: bookApartmentModel), context);
+        } else {
+          _goToSuccess();
+        }
+      },),
     );
   }
 
@@ -356,9 +372,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
       //   curve: Curves.ease,
       // );
 
-      var result = await _provider.initPayment(context: context, email: emailController.text, amount: (bookApartmentModel.transactionAmount * 100).ceil());
-      if(result.error) return;
-      PageRouter.gotoWidget(PaymentScreen(bookApartmentModel: bookApartmentModel), context);
+      openReserveOptionSheet(context);
     } else if (_activePage == 0) {
       bookApartmentModel.property = widget.roomPropertyModel.id;
       //Implement this when you add the date and time picker, it should be date

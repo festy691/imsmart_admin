@@ -500,7 +500,7 @@ class _BookRoomScreenState extends State<BookRoomScreen> {
                   ),
 
                   CustomButtonWidget(
-                    buttonText: "Book Now",
+                    buttonText: "Reserve",
                     width: 132.w,
                     height: 50.h,
                     buttonColor: Pallet.primaryColor,
