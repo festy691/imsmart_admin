@@ -124,7 +124,7 @@ class _UploadWidgetState extends State<UploadWidget> {
   Future<File?> _pickImage({bool isCamera = false}) async {
     try {
       final picker = ImagePicker();
-      final pickedFile = await picker.getImage(
+      final pickedFile = await picker.pickImage(
           source: isCamera ? ImageSource.camera : ImageSource.gallery);
       if (pickedFile != null) {
         int sizeInBytes = File(pickedFile.path).lengthSync();

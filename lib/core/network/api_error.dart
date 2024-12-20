@@ -17,26 +17,39 @@ class ApiError {
 
   /// sets value of class properties from [error]
   void _handleError(Object error) {
-    if (error is DioError) {
-      DioError dioError = error; // as DioError;
+    if (error is DioException) {
+      DioException dioError = error;
+      if (error.response != null &&
+          dioError.type == DioExceptionType.badResponse &&
+          dioError.response?.statusCode != 401 &&
+          dioError.response?.statusCode != 403) {}
+
       switch (dioError.type) {
-        case DioErrorType.cancel:
-          errorDescription = "Request to API server was cancelled";
+        case DioExceptionType.cancel:
+          errorDescription = "Request to API server was cancelled!!!";
           break;
-        case DioErrorType.connectTimeout:
+        case DioExceptionType.connectionTimeout:
           errorDescription =
-              "Connection timeout. Please check your internet connection and try again";
+              "Connection timeout. Please check your internet connection and try again!!!";
           break;
-        case DioErrorType.other:
+        case DioExceptionType.badCertificate:
           errorDescription =
-              'Something went wrong while processing your request';
+              "Server certificate error. We have failed to establish a connection due to certificate error!!!";
           break;
-        case DioErrorType.receiveTimeout:
+        case DioExceptionType.connectionError:
           errorDescription =
-              "Ouch! Seems like you’re offline. Please check your internet connection and try again";
+              "Connection error. Please check your internet connection and try again!!!";
           break;
-        case DioErrorType.response:
-          this.errorType = dioError.response?.statusCode;
+        case DioExceptionType.unknown:
+          errorDescription =
+              'An unknown error has occurred, we are unable to establish a connection with the server!!!';
+          break;
+        case DioExceptionType.receiveTimeout:
+          errorDescription =
+              "Ouch! Seems like you’re offline. Please check your internet connection and try again!!!";
+          break;
+        case DioExceptionType.badResponse:
+          errorType = dioError.response?.statusCode;
           if (dioError.response?.statusCode == 401) {
             if (dioError.response != null && dioError.response!.data != null) {
               if (!dioError.response!.data.toString().startsWith("{") ||
@@ -57,9 +70,8 @@ class ApiError {
               };
               dioError.response!.data = data;
             }
-            this.apiErrorModel = APIResponse.fromJson(dioError.response?.data);
-            this.errorDescription =
-                extractDescriptionFromResponse(error.response);
+            apiErrorModel = APIResponse.fromJson(dioError.response?.data);
+            errorDescription = extractDescriptionFromResponse(error.response);
           } else if (dioError.response?.statusCode == 400) {
             if (dioError.response != null && dioError.response!.data != null) {
               if (!dioError.response!.data.toString().startsWith("{") ||
@@ -79,9 +91,30 @@ class ApiError {
               };
               dioError.response!.data = data;
             }
-            this.apiErrorModel = APIResponse.fromJson(dioError.response?.data);
-            this.errorDescription =
-                extractDescriptionFromResponse(error.response);
+            print(dioError.response?.data);
+            apiErrorModel = APIResponse.fromJson(dioError.response?.data);
+            errorDescription = extractDescriptionFromResponse(error.response);
+          } else if (dioError.response?.statusCode == 403) {
+            if (dioError.response != null && dioError.response!.data != null) {
+              if (!dioError.response!.data.toString().startsWith("{") ||
+                  !dioError.response!.data.toString().endsWith("}")) {
+                var data = {
+                  "error": true,
+                  "data": null,
+                  "message": "Access denied"
+                };
+                dioError.response!.data = data;
+              }
+            } else {
+              var data = {
+                "error": true,
+                "data": null,
+                "message": "Access denied"
+              };
+              dioError.response!.data = data;
+            }
+            apiErrorModel = APIResponse.fromJson(dioError.response?.data);
+            errorDescription = extractDescriptionFromResponse(error.response);
           } else if (dioError.response?.statusCode == 404) {
             if (dioError.response != null && dioError.response!.data != null) {
               if (!dioError.response!.data.toString().startsWith("{") ||
@@ -101,11 +134,11 @@ class ApiError {
               };
               dioError.response!.data = data;
             }
-            this.apiErrorModel = APIResponse.fromJson(dioError.response?.data);
-            this.errorDescription =
-                extractDescriptionFromResponse(error.response);
+            apiErrorModel = APIResponse.fromJson(dioError.response?.data);
+            errorDescription = extractDescriptionFromResponse(error.response);
           } else if (dioError.response?.statusCode == 500) {
             if (dioError.response != null && dioError.response!.data != null) {
+              print(dioError.response!.data);
               if (!dioError.response!.data.toString().startsWith("{") ||
                   !dioError.response!.data.toString().endsWith("}")) {
                 var data = {
@@ -120,22 +153,21 @@ class ApiError {
               var data = {
                 "error": true,
                 "data": null,
-                "message": "omething went wrong while processing your request"
+                "message": "Something went wrong while processing your request"
               };
               dioError.response!.data = data;
             }
-            this.apiErrorModel = APIResponse.fromJson(dioError.response?.data);
-            this.errorDescription =
-                extractDescriptionFromResponse(error.response);
+            apiErrorModel = APIResponse.fromJson(dioError.response?.data);
+            errorDescription = extractDescriptionFromResponse(error.response);
           } else if (dioError.response?.statusCode == 502) {
-            this.errorDescription =
+            errorDescription =
                 'Internal server error. We are fixing it right away';
           } else {
-            this.errorDescription =
-                "Oops! we could'nt make connections, please try again";
+            errorDescription =
+                "Oops! we could not make connections, please try again";
           }
           break;
-        case DioErrorType.sendTimeout:
+        case DioExceptionType.sendTimeout:
           errorDescription =
               "Ouch! Seems like you’re offline. Please check your internet connection and try again";
           break;

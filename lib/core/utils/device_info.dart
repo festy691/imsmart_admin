@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 String deviceName = 'mobile';
@@ -8,7 +8,8 @@ String deviceName = 'mobile';
 void getDeviceInfo() async {
   if (Platform.isAndroid) {
     AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
-    deviceName = '${androidInfo.manufacturer} ${androidInfo.model} ${androidInfo.version.release}';
+    deviceName =
+        '${androidInfo.manufacturer} ${androidInfo.model} ${androidInfo.version.release}';
   } else {
     IosDeviceInfo iosDeviceInfo = await deviceInfoPlugin.iosInfo;
     deviceName =

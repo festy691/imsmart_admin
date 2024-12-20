@@ -26,10 +26,42 @@ class _PaymentScreenState extends State<PaymentScreen> {
   late PropertyProvider provider;
   bool isLoading = true;
 
+  late WebViewController controller;
+
   @override
   void initState() {
     // TODO: implement initState
     provider = context.provideOnce<PropertyProvider>();
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
+          onHttpError: (HttpResponseError error) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.contains("https://hello.pstk.xyz/callback")) {
+              //PageRouter.goBack(context); //close webview
+              _goToSuccess();
+            }
+            if (request.url.contains("https://your-cancel-url.com")) {
+              //handle webview removal //close webview
+              //Run the cancel payment function if you have one
+              AppDialog.showErrorDialog(context,
+                  message: 'Transaction failed!!!', onContinue: () {
+                PageRouter.goBack(context);
+                PageRouter.goBack(context);
+              });
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(provider.paymentInitModel?.authUrl));
     super.initState();
   }
 
@@ -64,49 +96,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: WebView(
-              initialUrl: provider.paymentInitModel?.authUrl,
-              javascriptMode: JavascriptMode.unrestricted,
-              userAgent: 'Flutter;Webview',
-              onPageFinished: (finish) {
-                isLoading = false;
-                if(mounted)setState(() {});
-              },
-              navigationDelegate: (navigation) {
-                //Listen for callback URL
-                if (navigation.url.contains("https://hello.pstk.xyz/callback")) {
-                  //PageRouter.goBack(context); //close webview
-                  _goToSuccess();
-                }
-                if (navigation.url.contains("https://your-cancel-url.com")) {
-                  //handle webview removal //close webview
-                  //Run the cancel payment function if you have one
-                  AppDialog.showErrorDialog(context,
-                    message: 'Transaction failed!!!',
-                    onContinue: () {
-                      PageRouter.goBack(context);
-                      PageRouter.goBack(context);
-                    }
-                  );
-                }
-                return NavigationDecision.navigate;
-              },
+            child: WebViewWidget(
+              controller: controller,
             ),
           ),
-
-          if(isLoading) Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Center(
-              child: ImageLoader(
-                path: AppAssets.loaderLottie,
-                width: 120.w,
-                height: 120.h,
+          if (isLoading)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Center(
+                child: ImageLoader(
+                  path: AppAssets.loaderLottie,
+                  width: 120.w,
+                  height: 120.h,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

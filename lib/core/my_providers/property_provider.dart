@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:imsmart_admin/core/services/property_service.dart';
 import 'package:imsmart_admin/core/utils/blink_dialog.dart';
 import 'package:imsmart_admin/core/utils/page_router.dart';
@@ -59,23 +58,24 @@ class PropertyProvider with ChangeNotifier {
   }
 
   Future<APIResponse> loadTransactions({
-      required BuildContext context,
-      bool load = false,
-      int page = 1,
-      int limit = 20,
-      }) async {
+    required BuildContext context,
+    bool load = false,
+    int page = 1,
+    int limit = 20,
+  }) async {
     try {
       if (load) {
         LoadingDialog.showLoading(context, _loadingKey);
       }
-      APIResponse result = await _propertyService.getTransactions(page: page, limit: limit);
+      APIResponse result =
+          await _propertyService.getTransactions(page: page, limit: limit);
       if (!result.error) {
         List<TransactionModel> _list = [];
         for (var c in result.data["docs"]) {
           TransactionModel model = TransactionModel.fromJson(c);
           _list.add(model);
         }
-        if(page > 1){
+        if (page > 1) {
           transactions.addAll(_list);
           setTransactionList(transactions);
         } else {
@@ -99,14 +99,13 @@ class PropertyProvider with ChangeNotifier {
       bool load = false,
       int page = 1,
       int limit = 20,
-      String cityId = ""
-      }) async {
+      String cityId = ""}) async {
     try {
       if (load) {
         LoadingDialog.showLoading(context, _loadingKey);
       }
-      APIResponse result =
-          await _propertyService.getProperties(cityId: cityId, page: page, limit: limit);
+      APIResponse result = await _propertyService.getProperties(
+          cityId: cityId, page: page, limit: limit);
       if (!result.error) {
         List<RoomPropertyModel> _list = [];
         for (var c in result.data["docs"]) {
@@ -127,18 +126,18 @@ class PropertyProvider with ChangeNotifier {
     }
   }
 
-  Future<APIResponse> loadTopApartments(
-      {required BuildContext context,
-      bool load = false,
-      int page = 1,
-      int limit = 10,
-      }) async {
+  Future<APIResponse> loadTopApartments({
+    required BuildContext context,
+    bool load = false,
+    int page = 1,
+    int limit = 10,
+  }) async {
     try {
       if (load) {
         LoadingDialog.showLoading(context, _loadingKey);
       }
-      APIResponse result =
-          await _propertyService.getProperties(cityId: "", page: page, limit: limit);
+      APIResponse result = await _propertyService.getProperties(
+          cityId: "", page: page, limit: limit);
       if (!result.error) {
         List<RoomPropertyModel> _list = [];
         for (var c in result.data["docs"]) {
@@ -159,12 +158,12 @@ class PropertyProvider with ChangeNotifier {
     }
   }
 
-  Future<APIResponse> loadAllCities(
-      {required BuildContext context,
-      bool load = false,
-      int page = 1,
-      int limit = 20,
-      }) async {
+  Future<APIResponse> loadAllCities({
+    required BuildContext context,
+    bool load = false,
+    int page = 1,
+    int limit = 20,
+  }) async {
     try {
       if (load) {
         LoadingDialog.showLoading(context, _loadingKey);
@@ -194,8 +193,7 @@ class PropertyProvider with ChangeNotifier {
   Future<APIResponse> loadSingleApartment(
       {required BuildContext context,
       bool load = false,
-      required String propertyId
-      }) async {
+      required String propertyId}) async {
     try {
       if (load) {
         LoadingDialog.showLoading(context, _loadingKey);
@@ -222,14 +220,12 @@ class PropertyProvider with ChangeNotifier {
   Future<APIResponse> loadSingleCity(
       {required BuildContext context,
       bool load = false,
-      required String cityId
-      }) async {
+      required String cityId}) async {
     try {
       if (load) {
         LoadingDialog.showLoading(context, _loadingKey);
       }
-      APIResponse result =
-          await _propertyService.getSingleCity(cityId: cityId);
+      APIResponse result = await _propertyService.getSingleCity(cityId: cityId);
       if (!result.error) {
         CityModel model = CityModel.fromJson(result.data);
         city = model;
@@ -250,8 +246,7 @@ class PropertyProvider with ChangeNotifier {
   Future<APIResponse> checkReferral(
       {required BuildContext context,
       bool load = false,
-      required String referralCode
-      }) async {
+      required String referralCode}) async {
     try {
       if (load) {
         LoadingDialog.showLoading(context, _loadingKey);
@@ -305,15 +300,15 @@ class PropertyProvider with ChangeNotifier {
     }
   }
 
-  Future<APIResponse> initPayment({
-    required BuildContext context,
-    required String email,
-    required int amount
-  }) async {
+  Future<APIResponse> initPayment(
+      {required BuildContext context,
+      required String email,
+      required int amount}) async {
     try {
       LoadingDialog.showLoading(context, _loadingKey);
-      APIResponse result = await _propertyService.initiatePayment(email: email, amount: amount);
-      if(!result.error){
+      APIResponse result =
+          await _propertyService.initiatePayment(email: email, amount: amount);
+      if (!result.error) {
         paymentInitModel = PaymentInitModel.fromJson(result.data);
         notifyListeners();
       }
@@ -336,8 +331,10 @@ class PropertyProvider with ChangeNotifier {
       LoadingDialog.showLoading(context, _loadingKey);
       APIResponse result = await _propertyService.checkPropertyAvailability(
           bookModel: bookApartmentModel);
-      if(!result.error && bookApartmentModel.referralCode.toString().isNotEmpty){
-        await checkReferral(context: context, referralCode: bookApartmentModel.referralCode);
+      if (!result.error &&
+          bookApartmentModel.referralCode.toString().isNotEmpty) {
+        await checkReferral(
+            context: context, referralCode: bookApartmentModel.referralCode);
       }
       LoadingDialog.hideLoading(_loadingKey);
       return result;
@@ -357,8 +354,8 @@ class PropertyProvider with ChangeNotifier {
   }) async {
     try {
       LoadingDialog.showLoading(context, _loadingKey);
-      APIResponse result =
-          await _propertyService.updateProperty(propertyId: propertyId, propertyModel: propertyModel);
+      APIResponse result = await _propertyService.updateProperty(
+          propertyId: propertyId, propertyModel: propertyModel);
       LoadingDialog.hideLoading(_loadingKey);
       return result;
     } catch (e, stackTrace) {
@@ -406,37 +403,5 @@ class PropertyProvider with ChangeNotifier {
       });
       return APIResponse(error: true, message: e.toString());
     }
-  }
-
-  Future<void> processPayment(
-    BuildContext context, {
-    required String cardNumber,
-    required String expiryDate,
-    required String cvc,
-    required String name,
-    required int amount,
-    required String email,
-    required PaystackPlugin paystackPlugin,
-  }) async {
-    String reference = 'user_${name.toLowerCase().replaceAll('', '_')}';
-
-    Charge charge = Charge()
-      ..amount = amount
-      ..email = email
-      ..reference = reference
-      ..card = PaymentCard(
-        number: cardNumber,
-        cvc: cvc,
-        expiryMonth: int.parse(expiryDate.split('/')[0]),
-        expiryYear: int.parse(expiryDate.split('/')[1]),
-      );
-
-    CheckoutResponse response = await paystackPlugin.checkout(
-      context,
-      charge: charge,
-      method: CheckoutMethod.card,
-    );
-
-    if (response.status == true) {}
   }
 }
