@@ -109,7 +109,7 @@ dependencies:
   intl_phone_number_input:
   sticky_grouped_list: ^2.1.0
   timeago: ^3.2.2
-  multi_image_picker2: ^5.0.2
+  # multi_image_picker2: ^5.0.2
   flutter_image_slideshow: ^0.1.6
   package_info_plus: ^1.4.2
   share_plus: ^4.5.3
