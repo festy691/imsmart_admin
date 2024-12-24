@@ -1,9 +1,7 @@
 import 'dart:ui';
-
-import 'package:flutter_chips_input/flutter_chips_input.dart';
+import 'package:choose_input_chips/choose_input_chips.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:imsmart_admin/core/utils/app_theme.dart';
 import 'package:imsmart_admin/core/utils/constants.dart';
 import 'package:imsmart_admin/core/utils/pallet.dart';
@@ -433,7 +431,8 @@ class CustomChipInupt extends StatelessWidget {
                         ..sort((a, b) => a
                             .toLowerCase()
                             .indexOf(lowercaseQuery)
-                            .compareTo(b.toLowerCase().indexOf(lowercaseQuery)));
+                            .compareTo(
+                                b.toLowerCase().indexOf(lowercaseQuery)));
                     } else {
                       return const <String>[];
                     }
@@ -454,199 +453,6 @@ class CustomChipInupt extends StatelessWidget {
                       onTap: () => state.selectSuggestion(profile),
                     );
                   },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PhoneFormField extends StatelessWidget {
-  PhoneFormField({
-    this.label = '',
-    this.hint = '',
-    this.prefixIcon,
-    this.suffixIcon,
-    this.suffixWidget,
-    this.prefixWidget,
-    this.onSaved,
-    this.onChanged,
-    this.validator,
-    this.autoValidateMode = AutovalidateMode.onUserInteraction,
-    this.controller,
-    this.onPasswordToggle,
-    this.initialValue,
-    this.autoValidate = false,
-    this.autocorrect = true,
-    this.readOnly = false,
-    this.ignore = false,
-    this.obscureText = false,
-    this.isborderDecoration = true,
-    this.onTapped,
-    this.keyboardType,
-    this.maxLines = 1,
-    this.minLines = 1,
-    this.maxLength,
-    this.inputFormatters,
-    this.focusedColorBorder = Colors.white,
-    this.labelStyle,
-    this.hintStyle,
-    this.textStyle,
-    this.decoration,
-    this.textCapitalization = TextCapitalization.none,
-    this.key,
-    this.focusNode,
-    this.floatingLabelBehavior = FloatingLabelBehavior.never,
-  });
-
-  TextCapitalization textCapitalization;
-  String label;
-  String hint;
-  IconData? prefixIcon;
-  IconData? suffixIcon;
-
-  Widget? prefixWidget;
-  Widget? suffixWidget;
-
-  final FormFieldSetter<PhoneNumber>? onSaved;
-  final Function(PhoneNumber)? onChanged;
-  final FormFieldValidator<String>? validator;
-  VoidCallback? onPasswordToggle;
-  final AutovalidateMode? autoValidateMode;
-
-  PhoneNumber? initialValue;
-  TextEditingController? controller;
-  FocusNode? focusNode;
-
-  bool autocorrect;
-  bool autoValidate;
-  bool readOnly;
-  bool ignore;
-  bool obscureText;
-  bool isborderDecoration;
-
-  // bool clickable;
-  Function()? onTapped;
-
-  TextInputType? keyboardType;
-  int maxLines;
-  int minLines;
-  int? maxLength;
-  var inputFormatters;
-
-  Color focusedColorBorder;
-  final TextStyle? labelStyle;
-  final TextStyle? hintStyle;
-  final TextStyle? textStyle;
-  InputDecoration? decoration;
-  FloatingLabelBehavior floatingLabelBehavior;
-  Key? key;
-
-  @override
-  Widget build(BuildContext context) {
-    focusedColorBorder = Theme.of(context).brightness == Brightness.dark
-        ? Pallet.white
-        : Pallet.grey;
-    return InkWell(
-      onTap: onTapped,
-      child: IgnorePointer(
-        ignoring: ignore,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextView(
-              text: label,
-              textAlign: TextAlign.center,
-              textStyle: GoogleFonts.poppins(
-                  fontSize: setSp(14),
-                  color: Pallet.black,
-                  fontWeight: FontWeight.w400),
-            ),
-            SizedBox(
-              height: setHeight(8),
-            ),
-            Theme(
-              data: Theme.of(context).copyWith(splashColor: Colors.transparent),
-              child: Container(
-                padding: EdgeInsets.only(left: setWidth(12)),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Pallet.grey.withOpacity(0.5), width: 0.5),
-                  borderRadius: BorderRadius.circular(setHeight(10)),
-                ),
-                child: InternationalPhoneNumberInput(
-                  key: key,
-                  keyboardType: keyboardType ??
-                      TextInputType.numberWithOptions(
-                          signed: true, decimal: true),
-                  onSaved: onSaved,
-                  validator: validator,
-                  selectorTextStyle: textStyle ??
-                      TextStyle(
-                          color: Pallet.black.withOpacity(0.7),
-                          fontSize: setSp(16)),
-                  formatInput: true,
-                  ignoreBlank: false,
-                  autoValidateMode: autoValidate
-                      ? AutovalidateMode.always
-                      : AutovalidateMode.disabled,
-                  initialValue: initialValue ?? PhoneNumber(isoCode: 'NG'),
-                  textFieldController: controller,
-                  onInputChanged: onChanged,
-                  onInputValidated: (bool value) {
-                    //print(value);
-                  },
-                  selectorConfig: SelectorConfig(
-                    selectorType: PhoneInputSelectorType.DIALOG,
-                  ),
-                  inputDecoration: decoration ??
-                      InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Pallet.grey.withOpacity(0.8), width: 1),
-                          borderRadius: BorderRadius.circular(setHeight(10)),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Pallet.grey.withOpacity(0.4), width: 0.5),
-                          borderRadius: BorderRadius.circular(setHeight(10)),
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Pallet.grey.withOpacity(0.4), width: 0.5),
-                          borderRadius: BorderRadius.circular(setHeight(10)),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Pallet.red.withOpacity(0.6), width: 1),
-                          borderRadius: BorderRadius.circular(setHeight(10)),
-                        ),
-                        //contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24.0),
-                        hintText: hint,
-                        hintStyle: hintStyle ??
-                            GoogleFonts.poppins(
-                                color: Pallet.grey.withOpacity(0.7)),
-                        labelText: "", //label,
-                        isDense: true,
-                        labelStyle: labelStyle ??
-                            GoogleFonts.poppins(
-                                color: Pallet.grey.withOpacity(0.7),
-                                fontSize: setSp(14)),
-                        prefixIcon: prefixIcon != null
-                            ? IconButton(
-                                onPressed: onPasswordToggle,
-                                icon: Icon(prefixIcon))
-                            : null,
-                        suffixIcon: suffixIcon != null
-                            ? IconButton(
-                                onPressed: onPasswordToggle,
-                                icon: Icon(suffixIcon))
-                            : null,
-                      ),
                 ),
               ),
             ),

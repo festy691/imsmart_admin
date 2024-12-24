@@ -40,6 +40,8 @@ class _KeepAliveObserver extends WidgetsBindingObserver {
         _saveTime();
         _keepAlive(); // Conservatively set a timer on all three
         break;
+      case AppLifecycleState.hidden:
+      // TODO: Handle this case.
     }
   }
 }

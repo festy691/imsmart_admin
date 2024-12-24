@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imsmart_admin/core/utils/constants.dart';
@@ -81,31 +82,33 @@ final _textThemeLight = TextStyle(
 );
 
 var appThemeLight = ThemeData(
-  primarySwatch: Colors.blue,
   cupertinoOverrideTheme: const CupertinoThemeData(
     primaryColor: Pallet.blueToolTip,
   ),
   indicatorColor: Pallet.colorPrimary,
   primaryColor: Pallet.colorPrimary,
-  accentColor: Pallet.accentColor,
-  backgroundColor: Pallet.backgroundLight,
   hintColor: Pallet.hintColorLight,
   brightness: Brightness.light,
   scaffoldBackgroundColor: Pallet.backgroundLight,
   dividerColor: Pallet.dividerColor,
   disabledColor: Pallet.disabledColor,
-  errorColor: Colors.blue.shade800,
   cardColor: Pallet.cardColorLight,
   appBarTheme: AppBarTheme(
     color: Pallet.backgroundLight,
-    brightness: Brightness.light,
     iconTheme: const IconThemeData(color: Pallet.black),
-    textTheme: TextTheme(
-      headline6: _textThemeLight.copyWith(
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
+    toolbarTextStyle: TextTheme(
+      titleLarge: _textThemeLight.copyWith(
         fontSize: _baseFontSizeLarger,
         fontWeight: FontWeight.w600,
       ),
-    ),
+    ).bodyMedium,
+    titleTextStyle: TextTheme(
+      titleLarge: _textThemeLight.copyWith(
+        fontSize: _baseFontSizeLarger,
+        fontWeight: FontWeight.w600,
+      ),
+    ).titleLarge,
   ),
   fontFamily: fontFamily,
   tabBarTheme: TabBarTheme(
@@ -122,19 +125,23 @@ var appThemeLight = ThemeData(
   ),
   iconTheme: const IconThemeData(color: Pallet.iconTint),
   primaryTextTheme: TextTheme(
-    bodyText1: _textThemeLight,
-    bodyText2: _textThemeLight.copyWith(fontSize: _baseFontSizeSmaller),
-    headline1: _textThemeLight.copyWith(
+    bodyLarge: _textThemeLight,
+    bodyMedium: _textThemeLight.copyWith(fontSize: _baseFontSizeSmaller),
+    displayLarge: _textThemeLight.copyWith(
         fontWeight: FontWeight.bold, fontSize: _baseFontSizeLarger),
-    headline2: _textThemeLight.copyWith(
+    displayMedium: _textThemeLight.copyWith(
         fontWeight: FontWeight.bold, fontSize: _baseFontSize),
-    caption: _textThemeLight,
-    subtitle1: _textThemeLight.copyWith(
+    bodySmall: _textThemeLight,
+    titleMedium: _textThemeLight.copyWith(
         fontSize: 32, fontWeight: FontWeight.bold, color: Pallet.black),
-    subtitle2: _textThemeLight.copyWith(
+    titleSmall: _textThemeLight.copyWith(
         fontWeight: FontWeight.w400, color: Pallet.iconTint),
-    button: _textThemeLight,
+    labelLarge: _textThemeLight,
   ),
+  colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+      .copyWith(secondary: Pallet.accentColor)
+      .copyWith(surface: Pallet.backgroundLight)
+      .copyWith(error: Colors.blue.shade800),
 );
 
 // ------------------------------
@@ -147,30 +154,32 @@ final _textThemeDark = TextStyle(
 );
 
 final appThemeDark = ThemeData(
-  primarySwatch: Colors.blue,
   cupertinoOverrideTheme: const CupertinoThemeData(
     primaryColor: Pallet.blueToolTip,
   ),
   primaryColor: Pallet.colorPrimary,
-  backgroundColor: Pallet.backgroundDark,
-  accentColor: Pallet.accentColor,
   hintColor: Pallet.hintColorDark,
   brightness: Brightness.dark,
   scaffoldBackgroundColor: Pallet.scaffoldBackgroundDark,
   dividerColor: Pallet.dividerColorDark,
   disabledColor: Pallet.disabledColor,
-  errorColor: Colors.blue.shade400,
   cardColor: Pallet.cardDarkGrey,
   appBarTheme: AppBarTheme(
     color: Pallet.backgroundDark,
-    brightness: Brightness.dark,
     iconTheme: IconThemeData(color: Pallet.white),
-    textTheme: TextTheme(
-      headline6: _textThemeDark.copyWith(
+    systemOverlayStyle: SystemUiOverlayStyle.light,
+    toolbarTextStyle: TextTheme(
+      titleLarge: _textThemeDark.copyWith(
         fontSize: _baseFontSizeLarger,
         fontWeight: FontWeight.w600,
       ),
-    ),
+    ).bodyMedium,
+    titleTextStyle: TextTheme(
+      titleLarge: _textThemeDark.copyWith(
+        fontSize: _baseFontSizeLarger,
+        fontWeight: FontWeight.w600,
+      ),
+    ).titleLarge,
   ),
   fontFamily: fontFamily,
   tabBarTheme: TabBarTheme(
@@ -186,17 +195,21 @@ final appThemeDark = ThemeData(
     ),
   ),
   primaryTextTheme: TextTheme(
-    bodyText1: _textThemeDark,
-    bodyText2: _textThemeDark.copyWith(fontSize: _baseFontSizeSmaller),
-    headline1: _textThemeDark.copyWith(
+    bodyLarge: _textThemeDark,
+    bodyMedium: _textThemeDark.copyWith(fontSize: _baseFontSizeSmaller),
+    displayLarge: _textThemeDark.copyWith(
         fontWeight: FontWeight.bold, fontSize: _baseFontSizeLarger),
-    caption: _textThemeDark,
-    subtitle1: _textThemeDark.copyWith(
+    bodySmall: _textThemeDark,
+    titleMedium: _textThemeDark.copyWith(
         fontSize: ScreenUtil().setSp(32),
         fontWeight: FontWeight.bold,
         color: Pallet.white),
-    subtitle2: _textThemeDark.copyWith(
+    titleSmall: _textThemeDark.copyWith(
         fontWeight: FontWeight.w400, color: Pallet.iconTint),
-    button: _textThemeDark,
+    labelLarge: _textThemeDark,
   ),
+  colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+      .copyWith(secondary: Pallet.accentColor)
+      .copyWith(surface: Pallet.backgroundDark)
+      .copyWith(error: Colors.blue.shade400),
 );

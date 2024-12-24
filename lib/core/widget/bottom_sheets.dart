@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BottomSheets {
   static Future<T?> showSheet<T>(BuildContext context,
@@ -26,19 +27,20 @@ class BottomSheets {
         });
   }
 
-  static PersistentBottomSheetController<T> showPersistentSheet<T>(
+  static PersistentBottomSheetController showPersistentSheet<T>(
       BuildContext context,
       {required Widget child}) {
-    return showBottomSheet<T>(
+    return showBottomSheet(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+                topLeft: Radius.circular(12.r),
+                topRight: Radius.circular(12.r))),
         context: context,
         builder: (_) {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(Icons.maximize),
+              const Icon(Icons.maximize),
               Flexible(child: child),
             ],
           );

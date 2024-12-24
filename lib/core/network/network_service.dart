@@ -35,8 +35,8 @@ class NetworkService {
   /// Initialize essential class properties
   void _initialiseDio() {
     dio = new Dio(BaseOptions(
-      connectTimeout: CONNECT_TIME_OUT,
-      receiveTimeout: RECEIVE_TIME_OUT,
+      connectTimeout: const Duration(milliseconds: CONNECT_TIME_OUT),
+      receiveTimeout: const Duration(milliseconds: RECEIVE_TIME_OUT),
       baseUrl: baseUrl ?? UrlConfig.coreBaseUrl,
     ));
     dio!.interceptors

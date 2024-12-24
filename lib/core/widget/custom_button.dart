@@ -50,7 +50,7 @@ class CustomButtonWidget extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onTap,
           style: ElevatedButton.styleFrom(
-            primary: disabled == true
+            backgroundColor: disabled == true
                 ? Pallet.lightGrey.withOpacity(0.1)
                 : buttonColor ?? Pallet.black,
             shape: RoundedRectangleBorder(
@@ -108,7 +108,7 @@ class CustomOutlinedButtonWidget extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onTap,
         style: OutlinedButton.styleFrom(
-            primary: borderColor ?? Pallet.black,
+            backgroundColor: borderColor ?? Pallet.black,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),

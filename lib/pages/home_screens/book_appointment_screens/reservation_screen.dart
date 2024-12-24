@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:imsmart_admin/core/widget/bottom_sheets.dart';
@@ -116,8 +115,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
     }
   }
 
-  final payStackPlugin = PaystackPlugin();
-
   int totalDays = 0;
 
   List<int> _pageNumber = <int>[1, 2, 3];
@@ -127,7 +124,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
     // TODO: implement initState
     super.initState();
     _provider = context.provideOnce<PropertyProvider>();
-    payStackPlugin.initialize(publicKey: UrlConfig.payStackPublicKey);
   }
 
   @override
@@ -224,9 +220,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 ],
               ),
             ),
-
             SizedBox(height: 16.h),
-
             Expanded(
               child: PageView(
                 physics: NeverScrollableScrollPhysics(),
@@ -264,7 +258,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       ),
                     ],
                   ),
-
                   ListView(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     children: [
@@ -274,7 +267,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       ),
                     ],
                   ),
-
                   ListView(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     children: [
@@ -291,30 +283,31 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 ],
               ),
             ),
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if(_activePage != 0)TextButton(
-                    onPressed: (){
-                      goToPreviousPageView();
-                    },
-                    child: TextView(
-                      text: "Back",
-                      textStyle: buttonTextStyle.copyWith(color: Pallet.blue, fontSize: 14.sp, decoration: TextDecoration.underline),
+                  if (_activePage != 0)
+                    TextButton(
+                      onPressed: () {
+                        goToPreviousPageView();
+                      },
+                      child: TextView(
+                        text: "Back",
+                        textStyle: buttonTextStyle.copyWith(
+                            color: Pallet.blue,
+                            fontSize: 14.sp,
+                            decoration: TextDecoration.underline),
+                      ),
                     ),
-                  ),
-
                   SizedBox(),
-
                   CustomButtonWidget(
                     buttonText: _activePage == 0
                         ? "Continue"
                         : _activePage == 1
-                        ? "Continue"
-                        : "Complete",
+                            ? "Continue"
+                            : "Complete",
                     width: 0.3.sw,
                     height: 46.h,
                     buttonColor: Pallet.primaryColor,
@@ -332,7 +325,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 ],
               ),
             ),
-
             SizedBox(height: 24.h),
           ],
         ),
@@ -352,15 +344,21 @@ class _ReservationScreenState extends State<ReservationScreen> {
   void openReserveOptionSheet(BuildContext context) {
     BottomSheets.showSheet<String>(
       context,
-      child: ReserveSheet(onSelected: (int index) async {
-        if(index == 0){
-          var result = await _provider.initPayment(context: context, email: emailController.text, amount: (bookApartmentModel.transactionAmount * 100).ceil());
-          if(result.error) return;
-          PageRouter.gotoWidget(PaymentScreen(bookApartmentModel: bookApartmentModel), context);
-        } else {
-          _goToSuccess();
-        }
-      },),
+      child: ReserveSheet(
+        onSelected: (int index) async {
+          if (index == 0) {
+            var result = await _provider.initPayment(
+                context: context,
+                email: emailController.text,
+                amount: (bookApartmentModel.transactionAmount * 100).ceil());
+            if (result.error) return;
+            PageRouter.gotoWidget(
+                PaymentScreen(bookApartmentModel: bookApartmentModel), context);
+          } else {
+            _goToSuccess();
+          }
+        },
+      ),
     );
   }
 
@@ -394,12 +392,15 @@ class _ReservationScreenState extends State<ReservationScreen> {
       var status = await _provider.checkAvailability(
           context: context, bookApartmentModel: bookApartmentModel);
       if (status.error) return;
-      if(referralController.text.isNotEmpty && _provider.referralModel != null){
+      if (referralController.text.isNotEmpty &&
+          _provider.referralModel != null) {
         num amount = widget.roomPropertyModel.amount;
-        num discount = widget.roomPropertyModel.amount * (_provider.referralModel?.discount / 100);
+        num discount = widget.roomPropertyModel.amount *
+            (_provider.referralModel?.discount / 100);
         num cautionFee = widget.roomPropertyModel.cautionFee;
         bookApartmentModel.discountAmount = discount;
-        bookApartmentModel.transactionAmount = (totalDays * amount) - discount + cautionFee;
+        bookApartmentModel.transactionAmount =
+            (totalDays * amount) - discount + cautionFee;
       }
       _pageController.nextPage(
         duration: Duration(milliseconds: 500),
@@ -416,81 +417,39 @@ class _ReservationScreenState extends State<ReservationScreen> {
   }
 
   bool isButtonDisabled() {
-    if(firstNameController.text.isEmpty){
+    if (firstNameController.text.isEmpty) {
       fNameKey.currentState?.shake();
       return true;
     }
-    if(lastNameController.text.isEmpty){
+    if (lastNameController.text.isEmpty) {
       lNameKey.currentState?.shake();
       return true;
     }
-    if(emailController.text.isEmpty){
+    if (emailController.text.isEmpty) {
       emailKey.currentState?.shake();
       return true;
     }
-    if(phoneNumberController.text.isEmpty){
+    if (phoneNumberController.text.isEmpty) {
       phoneKey.currentState?.shake();
       return true;
     }
-    if(addressController.text.isEmpty){
+    if (addressController.text.isEmpty) {
       addressKey.currentState?.shake();
       return true;
     }
-    if(checkInDate.isEmpty){
+    if (checkInDate.isEmpty) {
       checkInKey.currentState?.shake();
       return true;
     }
-    if(checkOutDate.isEmpty){
+    if (checkOutDate.isEmpty) {
       checkOutKey.currentState?.shake();
       return true;
     }
-    if(countryController.text.isEmpty){
+    if (countryController.text.isEmpty) {
       countryKey.currentState?.shake();
       return true;
     }
     return false;
-  }
-
-  String _getReference() {
-    String platform;
-    if (Platform.isIOS) {
-      platform = 'iOS';
-    } else {
-      platform = 'Android';
-    }
-    return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
-  }
-
-  PaymentCard _getCardFromUI() {
-    return PaymentCard(
-      number: PayCard.CardUtils.getCleanedNumber(cardNumberController.text),
-      cvc: PayCard.CardUtils.getCleanedNumber(cvvController.text),
-      expiryMonth: PayCard.CardUtils.getExpiryDate(
-          expiryDateController.text.toString())[0],
-      expiryYear: PayCard.CardUtils.getExpiryDate(
-          expiryDateController.text.toString())[1],
-    );
-  }
-
-  void _validateInputs() {
-    final FormState form = _formKey.currentState!;
-    if (!form.validate()) {
-      setState(() {
-        _autoValidateMode =
-            AutovalidateMode.always; // Start validating on every change.
-      });
-      AppDialog.showErrorDialog(context,
-          message: 'Please fix the errors in red before submitting.',
-          onContinue: () {
-        PageRouter.goBack(context);
-      });
-    } else {
-      context.closeKeyboard();
-      form.save();
-      startChargingCard();
-      // Encrypt and send send payment details to payment gateway
-      // onTap();
-    }
   }
 
   void openPaymentSheet() {
@@ -518,50 +477,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
         },
       ),
     );
-  }
-
-  startChargingCard() {
-    num amount = widget.roomPropertyModel.amount;
-    num cautionFee = widget.roomPropertyModel.cautionFee;
-    Charge charge = Charge();
-    charge.card = _getCardFromUI();
-    charge
-      ..amount = (((totalDays * amount) + cautionFee) * 100).ceil()
-      ..email = '${bookApartmentModel.email}'
-      ..reference = _getReference()
-      ..putCustomField('Charged From', 'IMSmart');
-    _chargeCard(charge);
-  }
-
-  _chargeCard(Charge charge) async {
-    CheckoutResponse response = await payStackPlugin.checkout(
-      context,
-      method: CheckoutMethod.card,
-      charge: charge,
-      fullscreen: false,
-      logo: ImageLoader(
-        // TODO
-        path: AppAssets.visa,
-      ),
-    );
-
-    final reference = response.reference;
-    // Checking if the transaction is successful
-    if (response.status) {
-      hasPay = true;
-      print(response);
-      num amount = widget.roomPropertyModel.amount;
-      num cautionFee = widget.roomPropertyModel.cautionFee;
-      bookApartmentModel.transactionAmount = (totalDays * amount) + cautionFee;
-      bookApartmentModel.transactionRef = reference;
-      _goToSuccess();
-    }
-    // The transaction failed. Checking if we should verify the transaction
-    if (response.verify) {
-      // _verifyOnServer(reference);
-    } else {
-      // _updateStatus(reference, response.message);
-    }
   }
 
   _goToSuccess() async {
