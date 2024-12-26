@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:geocoding/geocoding.dart';
 import 'package:imsmart_admin/core/utils/app_assets.dart';
 import 'package:imsmart_admin/core/utils/app_theme.dart';
@@ -12,7 +11,6 @@ import 'package:imsmart_admin/core/widget/dialogs.dart';
 import 'package:imsmart_admin/core/widget/image_loader.dart';
 import 'package:imsmart_admin/core/widget/text_views.dart';
 import 'package:imsmart_admin/models/room_property_model.dart';
-import 'package:imsmart_admin/pages/home_screens/book_room_screen.dart';
 import 'package:imsmart_admin/pages/home_screens/components/room_items.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
@@ -37,7 +35,7 @@ class _RoomPropertyState extends State<RoomProperty> {
       // clipBehavior: Clip.none,
       children: [
         Container(
-          decoration: ShapeDecoration(
+          decoration: const ShapeDecoration(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
@@ -56,7 +54,7 @@ class _RoomPropertyState extends State<RoomProperty> {
         Container(
           width: getWidth(context),
           // height: getHeight(context) / 1.29,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Pallet.cream,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
@@ -72,7 +70,7 @@ class _RoomPropertyState extends State<RoomProperty> {
                   vertical: setHeight(20),
                 ),
                 width: getWidth(context),
-                decoration: ShapeDecoration(
+                decoration: const ShapeDecoration(
                   color: Pallet.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
@@ -92,9 +90,7 @@ class _RoomPropertyState extends State<RoomProperty> {
                         color: Pallet.black,
                       ),
                     ),
-
                     SizedBox(height: setHeight(8)),
-
                     Row(children: [
                       RoomItem(
                         imagePath: AppAssets.home,
@@ -106,9 +102,7 @@ class _RoomPropertyState extends State<RoomProperty> {
                         caption: "${widget.roomProperty.toilet} toilet",
                       ),
                     ]),
-
                     SizedBox(height: setHeight(8)),
-
                     InkWell(
                       onTap: () async {
                         setState(() {
@@ -149,9 +143,7 @@ class _RoomPropertyState extends State<RoomProperty> {
                         ],
                       ),
                     ),
-
                     SizedBox(height: setHeight(12)),
-
                     Row(
                       children: [
                         Column(
@@ -193,7 +185,6 @@ class _RoomPropertyState extends State<RoomProperty> {
                         ),
                       ],
                     ),
-
                   ],
                 ),
               ),
