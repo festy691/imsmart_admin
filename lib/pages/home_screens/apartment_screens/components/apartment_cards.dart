@@ -10,18 +10,17 @@ import 'package:imsmart_admin/models/room_property_model.dart';
 class ApartmentCard extends StatelessWidget {
   final RoomPropertyModel propertyModel;
   final Function onTap;
-  const ApartmentCard({super.key, required this.propertyModel, required this.onTap});
+  const ApartmentCard(
+      {super.key, required this.propertyModel, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=> onTap(),
+      onTap: () => onTap(),
       child: Container(
         width: 150.w,
         height: 220.h,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14.w)
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(14.w)),
         child: Stack(
           children: [
             Positioned(
@@ -38,14 +37,20 @@ class ApartmentCard extends StatelessWidget {
                 //curve: 14.w,
               ),
             ),
-
             Positioned(
               bottom: 0,
               left: 0,
               right: 0,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                color: Pallet.black.withOpacity(0.4),
+                decoration: BoxDecoration(
+                  color: Pallet.black.withOpacity(0.4),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(14.w),
+                    bottomRight: Radius.circular(14.w),
+                  ),
+                  // circular(14.w)
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -58,7 +63,6 @@ class ApartmentCard extends StatelessWidget {
                         color: Pallet.white,
                       ),
                     ),
-
                     TextView(
                       text: "${propertyModel.location}",
                       maxLines: 2,
@@ -68,22 +72,23 @@ class ApartmentCard extends StatelessWidget {
                         color: Pallet.white,
                       ),
                     ),
-
                     Row(
                       children: [
                         TextView(
-                          text: "${formatMoney(propertyModel.amount, decimalDigits: 0)}",
+                          text:
+                              "${formatMoney(propertyModel.amount, decimalDigits: 0)}",
                           textStyle: body1TextStyle.copyWith(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w600,
                             color: Pallet.white,
                           ),
                         ),
-
                         const Spacer(),
-
-                        Icon(Icons.star, color: Pallet.gold, size: 14.w,),
-
+                        Icon(
+                          Icons.star,
+                          color: Pallet.gold,
+                          size: 14.w,
+                        ),
                         TextView(
                           text: "${propertyModel.totalRating}",
                           textStyle: body1TextStyle.copyWith(

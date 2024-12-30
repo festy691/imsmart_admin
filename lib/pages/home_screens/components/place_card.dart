@@ -14,13 +14,11 @@ class PlaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=> onTap(),
+      onTap: () => onTap(),
       child: Container(
         width: 150.w,
         height: 150.h,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14.w)
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(14.w)),
         child: Stack(
           children: [
             Positioned(
@@ -37,14 +35,20 @@ class PlaceCard extends StatelessWidget {
                 //curve: 14.w,
               ),
             ),
-
             Positioned(
               bottom: 0,
               left: 0,
               right: 0,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                color: Pallet.black.withOpacity(0.4),
+                decoration: BoxDecoration(
+                  color: Pallet.black.withOpacity(0.4),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(14.w),
+                    bottomRight: Radius.circular(14.w),
+                  ),
+                  // circular(14.w)
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [

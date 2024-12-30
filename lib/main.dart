@@ -8,6 +8,7 @@ import 'package:imsmart_admin/core/di/injection_container.dart';
 import 'package:imsmart_admin/core/network/url_config.dart';
 import 'package:imsmart_admin/core/provider/get_provider.dart';
 import 'package:imsmart_admin/core/utils/device_info.dart';
+import 'package:imsmart_admin/core/utils/pallet.dart';
 import 'package:imsmart_admin/pages/welcome_screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -16,8 +17,8 @@ void main() async {
 
   //initialize singletons
   await init(
-  environment:
-  kReleaseMode ? Environment.production : Environment.production);
+      environment:
+          kReleaseMode ? Environment.production : Environment.production);
   //kReleaseMode ? Environment.staging : Environment.staging);
 
   // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
@@ -27,7 +28,7 @@ void main() async {
   //await FirebaseCrashlytics.instance.recordError("test error", StackTrace.fromString("Failed"), reason: 'Contacts provider');
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
-        (_) => runApp(const MyApp()),
+    (_) => runApp(const MyApp()),
   );
 }
 
@@ -87,7 +88,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             title: 'IMSmart',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              primarySwatch: Colors.blue,
+              primarySwatch: Pallet.materialPrimaryColor,
             ),
             home: SplashScreen(),
             routes: {},

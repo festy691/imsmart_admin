@@ -9,7 +9,8 @@ class BottomSheets {
         isScrollControlled: true,
         // backgroundColor: Colors.white.withOpacity(0.8),
         enableDrag: true,
-        shape: RoundedRectangleBorder(
+        useSafeArea: true,
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
@@ -21,7 +22,10 @@ class BottomSheets {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               // Icon(Icons.maximize),
-              Flexible(child: child),
+              Flexible(
+                flex: 0,
+                child: child,
+              ),
             ],
           );
         });

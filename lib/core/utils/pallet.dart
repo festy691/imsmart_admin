@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Pallet {
@@ -87,4 +86,21 @@ class Pallet {
           Random().nextInt(255), Random().nextInt(255))
       .value
       .toRadixString(16);
+
+  static const MaterialColor materialPrimaryColor = MaterialColor(
+    _primaryColorValue,
+    <int, Color>{
+      50: Color(0xFFDBBC98),
+      100: Color(0xFFD4AF83),
+      200: Color(0xFFCDA16E),
+      300: Color(0xFFC59459),
+      400: Color(0xFFBE8645),
+      500: Color(_primaryColorValue),
+      600: Color(0xFFA56D2B),
+      700: Color(0xFF926126),
+      800: Color(0xFF805522),
+      900: Color(0xFF6E491D),
+    },
+  );
+  static const int _primaryColorValue = 0xFFB77930;
 }

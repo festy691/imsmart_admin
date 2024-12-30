@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:imsmart_admin/core/extensions/extended_build_context.dart';
 import 'package:imsmart_admin/core/my_providers/property_provider.dart';
 import 'package:imsmart_admin/core/utils/app_assets.dart';
@@ -10,16 +9,17 @@ import 'package:imsmart_admin/core/utils/constants.dart';
 import 'package:imsmart_admin/core/utils/page_router.dart';
 import 'package:imsmart_admin/core/utils/pallet.dart';
 import 'package:imsmart_admin/core/utils/utils.dart';
+import 'package:imsmart_admin/core/widget/bottom_sheets.dart';
 import 'package:imsmart_admin/core/widget/custom_button.dart';
 import 'package:imsmart_admin/core/widget/image_loader.dart';
 import 'package:imsmart_admin/core/widget/text_views.dart';
 import 'package:imsmart_admin/models/book_apartment_model.dart';
-import 'package:imsmart_admin/models/room_property_model.dart';
-import 'package:imsmart_admin/pages/home_screens/book_appointment_screens/appointment_calendar_screens.dart';
-import 'package:imsmart_admin/pages/home_screens/privacy_policy_screen.dart';
 import 'package:imsmart_admin/pages/home_screens/book_appointment_screens/reservation_screen.dart';
+import 'package:imsmart_admin/pages/home_screens/privacy_policy_screen.dart';
 import 'package:imsmart_admin/pages/home_screens/terms_service_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'appointment_calendar_screens.dart';
 
 class ActiveBookingScreen extends StatefulWidget {
   final String propertyId;
@@ -37,28 +37,29 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
   bool isLoadingProperty = false;
   List<DateTime> _markedDates = [];
 
-  _loadProperty () async {
+  _loadProperty() async {
     isLoadingProperty = true;
-    if(mounted){
+    if (mounted) {
       setState(() {});
     }
-    await provider.loadAllBookings(context: context, propertyId: widget.propertyId, load: false);
+    await provider.loadAllBookings(
+        context: context, propertyId: widget.propertyId, load: false);
     isLoadingProperty = false;
     bookings = provider.bookings;
-    for(BookApartmentModel b in bookings){
+    for (BookApartmentModel b in bookings) {
       DateTime startDate = DateTime.parse(b.checkinDate);
       DateTime endDate = DateTime.parse(b.checkoutDate);
 
       int _daysBetween = daysBetween(startDate, endDate);
 
-      for(int i=0; i<_daysBetween; i++){
+      for (int i = 0; i < _daysBetween; i++) {
         DateTime bDate = startDate.add(Duration(days: i));
         DateTime markDate = DateTime(bDate.year, bDate.month, bDate.day);
         _markedDates.add(markDate);
       }
     }
 
-    if(mounted){
+    if (mounted) {
       setState(() {});
     }
   }
@@ -104,15 +105,41 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
             Expanded(
               child: ListView(
                 children: [
-                  if(isLoadingProperty) Center(
-                    child: ImageLoader(
-                      path: AppAssets.loaderLottie,
-                      width: 120.w,
-                      height: 120.h,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      CustomButtonWidget(
+                        width: 150.w,
+                        buttonText: "Click to check Availability",
+                        buttonColor: Pallet.primaryColor,
+                        buttonTextColor: Pallet.whiteColor,
+                        onTap: () {
+                          openAppointCalenderSheet();
+                        },
+                      ),
+                    ],
                   ),
 
-                  AppointmentCalendar(markedDates: _markedDates),
+                  SizedBox(height: 24.h),
+
+                  // AppointmentCalendar(markedDates: _markedDates),
+                  Container(
+                    decoration: const ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: ImageLoader(
+                      path: provider.propertyModel?.imagePath,
+                      width: getHeight(context),
+                      height: setHeight(239.5),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
 
                   SizedBox(height: 24.h),
 
@@ -131,7 +158,6 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
                             color: Pallet.grey,
                           ),
                         ),
-
                         TextView(
                           text: "${provider.propertyModel?.title}",
                           textStyle: buttonTextStyle.copyWith(
@@ -144,7 +170,10 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
                     ),
                   ),
 
-                  Divider(thickness: 1, color: Pallet.lightGrey,),
+                  const Divider(
+                    thickness: 1,
+                    color: Pallet.lightGrey,
+                  ),
 
                   SizedBox(height: 12.h),
 
@@ -163,9 +192,9 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
                             color: Pallet.grey,
                           ),
                         ),
-
                         TextView(
-                          text: formatMoney(provider.propertyModel?.amount, decimalDigits: 0),
+                          text: formatMoney(provider.propertyModel?.amount,
+                              decimalDigits: 0),
                           textStyle: buttonTextStyle.copyWith(
                             fontSize: setSp(16),
                             fontWeight: FontWeight.w700,
@@ -176,7 +205,10 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
                     ),
                   ),
 
-                  Divider(thickness: 1, color: Pallet.lightGrey,),
+                  const Divider(
+                    thickness: 1,
+                    color: Pallet.lightGrey,
+                  ),
 
                   SizedBox(height: 12.h),
 
@@ -195,9 +227,9 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
                             color: Pallet.grey,
                           ),
                         ),
-
                         TextView(
-                          text: formatMoney(provider.propertyModel?.cautionFee, decimalDigits: 0),
+                          text: formatMoney(provider.propertyModel?.cautionFee,
+                              decimalDigits: 0),
                           textStyle: buttonTextStyle.copyWith(
                             fontSize: setSp(16),
                             fontWeight: FontWeight.w700,
@@ -212,19 +244,17 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
                 ],
               ),
             ),
-
             Row(
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Checkbox(
-                  value: isChecked,
-                  onChanged: (value) {
-                    setState(() {
-                      isChecked = !isChecked;
-                      isChecked = value!;
-                    });
-                  }
-                ),
+                    value: isChecked,
+                    onChanged: (value) {
+                      setState(() {
+                        isChecked = !isChecked;
+                        isChecked = value!;
+                      });
+                    }),
                 Expanded(
                   child: RichText(
                     text: new TextSpan(
@@ -235,16 +265,16 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Terms and Conditions',
-                          style: captionStyle.copyWith(
-                            fontSize: setSp(12),
-                            fontWeight: FontWeight.w600,
-                            color: Pallet.transparentBlue,
-                          ),
-                          recognizer: TapGestureRecognizer()..onTap = (){
-                            termsAndCondition();
-                          }
-                        ),
+                            text: 'Terms and Conditions',
+                            style: captionStyle.copyWith(
+                              fontSize: setSp(12),
+                              fontWeight: FontWeight.w600,
+                              color: Pallet.transparentBlue,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                termsAndCondition();
+                              }),
                         TextSpan(
                           text: ' and ',
                           style: captionStyle.copyWith(
@@ -253,25 +283,23 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
                           ),
                         ),
                         TextSpan(
-                          text: 'Privacy Policy',
-                          style: captionStyle.copyWith(
-                            fontSize: setSp(12),
-                            fontWeight: FontWeight.w600,
-                            color: Pallet.transparentBlue,
-                          ),
-                          recognizer: TapGestureRecognizer()..onTap = (){
-                            privacyPolicy();
-                          }
-                        ),
+                            text: 'Privacy Policy',
+                            style: captionStyle.copyWith(
+                              fontSize: setSp(12),
+                              fontWeight: FontWeight.w600,
+                              color: Pallet.transparentBlue,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                privacyPolicy();
+                              }),
                       ],
                     ),
                   ),
                 ),
               ],
             ),
-
             SizedBox(height: 12.h),
-
             CustomButtonWidget(
               onTap: () {
                 PageRouter.gotoWidget(
@@ -291,11 +319,28 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-
             SizedBox(height: 12.h),
-
           ],
         ),
+      ),
+    );
+  }
+
+  void openAppointCalenderSheet() {
+    BottomSheets.showSheet<String>(
+      context,
+      child: Column(
+        children: [
+          if (isLoadingProperty)
+            Center(
+              child: ImageLoader(
+                path: AppAssets.loaderLottie,
+                width: 120.w,
+                height: 120.h,
+              ),
+            ),
+          AppointmentCalendar(markedDates: _markedDates),
+        ],
       ),
     );
   }
