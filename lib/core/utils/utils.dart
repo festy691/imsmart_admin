@@ -5,10 +5,10 @@ import 'dart:io';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void launchURL(String url) async {
   if (await canLaunch(url))
@@ -176,33 +176,34 @@ String handlePlatformException(PlatformException e) {
   // You can handle specific error codes
   switch (e.code) {
     case 'PERMISSION_DENIED':
-    // Handle permission denied error
+      // Handle permission denied error
       return 'Permission denied: ${e.message}';
     case 'NETWORK_ERROR':
-    // Handle network error
+      // Handle network error
       return 'Network error: ${e.message}';
     default:
-    // Handle other types of errors
+      // Handle other types of errors
       return 'An unknown error occurred: ${e.message}';
   }
 }
 
 String formNum(String inputString) {
-  if(inputString.isEmpty){
+  if (inputString.isEmpty) {
     return inputString;
   }
   String text1 = inputString;
-  if (text1.split(".").length > 2){
-    text1 = customReplace(text1,".",2,"");
+  if (text1.split(".").length > 2) {
+    text1 = customReplace(text1, ".", 2, "");
     return text1;
-  }
-  else if (text1.split(".").length == 2){
+  } else if (text1.split(".").length == 2) {
     num n1 = num.parse(text1.split(".").first.replaceAll(",", ""));
     String decimalPlace = text1.split(".").skip(1).first;
-    if(decimalPlace.split("").length > 2){
-      decimalPlace = decimalPlace.split("").elementAt(0) + decimalPlace.split("").elementAt(1);
+    if (decimalPlace.split("").length > 2) {
+      decimalPlace = decimalPlace.split("").elementAt(0) +
+          decimalPlace.split("").elementAt(1);
     }
-    String text2 = NumberFormat.decimalPattern().format(n1) + "." + decimalPlace;
+    String text2 =
+        NumberFormat.decimalPattern().format(n1) + "." + decimalPlace;
     return text2;
   }
   String text3 = inputString.replaceAll(',', '');
@@ -212,7 +213,8 @@ String formNum(String inputString) {
   );
 }
 
-String customReplace(String text,String searchText, int replaceOn, String replaceText){
+String customReplace(
+    String text, String searchText, int replaceOn, String replaceText) {
   String data = text.split(".").first + "." + text.split(".").skip(1).first;
   return data;
 }

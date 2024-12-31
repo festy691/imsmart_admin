@@ -109,7 +109,7 @@ class _ActiveBookingScreenState extends State<ActiveBookingScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       CustomButtonWidget(
-                        width: 150.w,
+                        // width: 150.w,
                         buttonText: "Click to check Availability",
                         buttonColor: Pallet.primaryColor,
                         buttonTextColor: Pallet.whiteColor,

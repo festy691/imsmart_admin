@@ -1,10 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:imsmart_admin/core/utils/app_theme.dart';
 import 'package:imsmart_admin/core/utils/constants.dart';
 import 'package:imsmart_admin/core/utils/pallet.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:imsmart_admin/core/widget/image_loader.dart';
 
 import 'text_views.dart';
@@ -13,7 +12,7 @@ import 'text_views.dart';
 class CustomButtonWidget extends StatelessWidget {
   final String buttonText;
   final VoidCallback onTap;
-  final double height;
+  final double? height;
   final double radius;
   final String? font;
   final num fontSize;
@@ -21,7 +20,7 @@ class CustomButtonWidget extends StatelessWidget {
   final TextStyle? buttonTextStyle;
   Color? buttonColor;
   Color? borderColor;
-  final double width;
+  final double? width;
   bool disabled;
 
   CustomButtonWidget(
@@ -29,9 +28,9 @@ class CustomButtonWidget extends StatelessWidget {
       required this.buttonText,
       required this.onTap,
       this.font,
-      this.height = 56,
+      this.height,
       this.radius = 8,
-      this.width = 50,
+      this.width,
       this.fontSize = 16,
       this.buttonTextColor,
       this.borderColor,

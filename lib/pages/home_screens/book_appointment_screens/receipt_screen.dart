@@ -2,12 +2,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imsmart_admin/core/utils/app_assets.dart';
 import 'package:imsmart_admin/core/utils/app_theme.dart';
 import 'package:imsmart_admin/core/utils/constants.dart';
-import 'package:imsmart_admin/core/utils/page_router.dart';
 import 'package:imsmart_admin/core/utils/pallet.dart';
 import 'package:imsmart_admin/core/utils/utils.dart';
 import 'package:imsmart_admin/core/widget/image_loader.dart';
@@ -17,7 +15,7 @@ import 'package:imsmart_admin/models/room_property_model.dart';
 import 'package:imsmart_admin/pages/home_screens/components/receipt_option.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ReceiptScreen extends StatefulWidget {
   final RoomPropertyModel roomPropertyModel;
@@ -44,7 +42,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
     final tempDir = await getTemporaryDirectory();
     File file = await File('${tempDir.path}/receipt.png').create();
     file.writeAsBytesSync(imageInUnit8List);
-    Share.shareFiles([file.path]);
+    Share.shareXFiles([XFile(file.path)]);
   }
 
   int originalSize = 800;
